@@ -1,5 +1,8 @@
-# greenweather
+# FreeWeatherForecastAPI
 
-This is a test repo for the website http://greenweather.azurewebsites.net/
+This is a test repo for getting free weather forecast data from the DarkSky API.
 
-Goal: to provide an automated weather forecast tool for the UK golf industry.
+- takes as input a config csv containing desired lat/lon coordinates
+- accesses API with python urllib.requests
+- saves daily, hourly, and minutely weather forecasts to local sqlite database
+- other scripts to export forecasts to csv or google sheets
