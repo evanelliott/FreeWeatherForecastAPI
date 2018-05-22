@@ -21,6 +21,9 @@ This is a test repo for getting free weather forecast data from the DarkSky API.
 ### How do I use it?
 - Setting up environment
 code install requirements.txt
+```
+$ pip install -r requirements.txt --no-index --find-links file:///tmp/packages
+```
 - Getting credentials from DarkSky
 link to DarkSky; mention daily call-limit; forecast products; forecast features; geographical domain boundaries;
 - Specifying forecast locations
