@@ -1,0 +1,5 @@
+LocationID,Latitude,Longitude,PlaceName,Country,Population
+1,51.528308,-0.3817765,London,England,8.788
+2,55.9412083,-3.2053388,Edinburgh,Scotland,0.495
+3,54.59488,-5.9266323,Belfast,Northern Ireland,0.446
+4,51.5022407,-3.1994095,Cardiff,Wales,0.36
