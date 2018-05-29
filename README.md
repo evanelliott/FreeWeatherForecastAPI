@@ -16,7 +16,7 @@ Optionally, weather forecasts can be exported in alternative formats to share da
 ## How does it do it? 
 The code is intended to perform as a simple “black box” for users. That being said, developers may find it useful to have a high-level description of its working parts. It is also a good opportunity to showcase some really nice Python tools.
 
-The code sends HTTP requests to the [DarkSky RESTful API][1] via Python’s [urllib][3] module. The “get” request contains important information, that is the latitude and longitude coordinates of the forecast location and your API key which can be obtained here.
+The code sends HTTP requests to the [DarkSky RESTful API][1] via Python’s [urllib][3] module. The “get” request contains important information, that is the latitude and longitude coordinates of the forecast location and your API key which can be obtained [here][1].
 
 [Pandas][4] plays a key role in translating the data. Its [json_normalize()](https://pandas.pydata.org/pandas-docs/version/0.21/generated/pandas.io.json.json_normalize.html) method is a very convenient way of decoding the standard API response from a ([JSON](https://www.json.org/)) nested set of sets and putting it in a nice familiar [DataFrame](http://pandas.pydata.org/pandas-docs/version/0.21/generated/pandas.DataFrame.html).
 
@@ -41,16 +41,16 @@ Link to the [website][1]
 ### •	Specifying forecast locations
 The locations are kept in the *config -> locations.csv* file. By default the capital cities of Great Britain are provided as an example.
 
-### •	Setting up a database (and getting SQLiteStudio)
+### •	Setting up a database
 The database is created automatically by the code. If you want a more intuitive interaction with the database I would recommend downloading [SQLiteStudio](https://sqlitestudio.pl/index.rvt). Its user interface (UI) makes it easy to query the data and generally observe the data in its natural habitat. :smiley:
 
-### •	Setting up GoogleSheets (and getting credentials)
+### • Preparing Google Sheets
 This option will add about 10 minutes on to the setup time. Essentially you need two pieces of data for this to work. The first is a free *“service account key”* file which will allow you to log in to the Google Sheets Developers API. [This page](http://gspread.readthedocs.io/en/latest/oauth2.html) explains how to get your service account key file. The second is a *“keyfile id”* which relates to the id of your destination document in the Google cloud. Importantly, your Google Sheets file must contain four sheets named "observation", "minutely", "hourly", and "daily" in order for the code to find them. Next you will need to copy/paste the service account key filepath and your keyfile id into the *config -> credentials.ini* file.
 
 ### •	Executing the script
 The script *main.py* downloads the latest forecasts for the locations you have configured. The *DataBasePreparer* will initially clear any pre-existing data, and then it will prepare the database tables according to the set of columns provided in *config -> forecast_metadata.ini*. It will then cycle through the locations and append their forecasts to the relevant tables. Finally it will export the data to CSV and/or Google Sheets depending on the key-word arguments (kwargs) passed to the *DataHandler.export_data()* method.
 
-### •	Single use versus task scheduling
+### •	Single use versus task-scheduling
 Downloading the latest forecast on an ad-hoc basis can be done by running the main.py script. On the other hand, what if you want to automatically update the forecasts on a daily basis? The answer is scheduling the task and there are many ways you could do this depending on your preferences. I personally find [Jenkins][9] to be a really great option since it is free, deployable on Windows or Linux machines, and provides handy “build logs” containing console output. When writing deployment code, I think it is always a good idea to keep a traceable account of my builds so I can catch bugs as and when they will surely appear. :smiley:
 
 ### •	Monitoring continuous deployment
