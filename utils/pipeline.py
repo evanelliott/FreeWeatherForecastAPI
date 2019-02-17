@@ -105,7 +105,7 @@ class DataHandler(object):
         conn = sqlite3.connect('DarkSky.db')
         for key in ['observation', 'minutely', 'hourly', 'daily']:
             df = pd.read_sql_query("SELECT * FROM {}".format(key), conn)
-            setattr(self.all_data, key, df)
+            self.all_data[key] = df
         print('\n\nLoaded all data from sqlite.')
 
     def disconnect_from_database(self):
