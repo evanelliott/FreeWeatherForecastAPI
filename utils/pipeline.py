@@ -85,7 +85,7 @@ class DataHandler(object):
 
     def save_csv_files(self, index_col_name):
         for key in ['observation', 'minutely', 'hourly', 'daily']:
-            data = getattr(self.all_data, key)
+            data = self.all_data[key]
             data.index = data[index_col_name].apply(
                 lambda x: dt.datetime.fromtimestamp(int(float(x))).strftime('%H:%M %a %d/%m'))
             data['datetime'] = data[index_col_name].apply(lambda x: dt.datetime.fromtimestamp(int(float(x))))
