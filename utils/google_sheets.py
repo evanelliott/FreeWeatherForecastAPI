@@ -3,7 +3,7 @@ import datetime as dt
 from oauth2client.service_account import ServiceAccountCredentials
 
 
-def update_google_sheets_file(file_id, keyfile_path, forecast, index_col_name):
+def update_google_sheets_file(file_id, keyfile_path, all_data, index_col_name):
     scope = ['https://spreadsheets.google.com/feeds',
              'https://www.googleapis.com/auth/drive']
 
@@ -19,7 +19,7 @@ def update_google_sheets_file(file_id, keyfile_path, forecast, index_col_name):
         sheet.clear()
         print('Cleared all values from Google Sheet {} {}.'.format(idx, key))
 
-        input_df = getattr(forecast, key)
+        input_df = getattr(all_data, key)
         input_df.index = input_df[index_col_name].apply(
             lambda x: dt.datetime.fromtimestamp(int(float(x))).strftime('%H:%M %a %d/%m'))
         input_df['datetime'] = input_df[index_col_name].apply(lambda x: dt.datetime.fromtimestamp(int(float(x))))

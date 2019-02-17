@@ -1,5 +1,6 @@
 import sqlite3
 import datetime as dt
+import pandas as pd
 from api.dark_sky import DarkSkyWeatherForecast
 from utils.read_config import get_forecast_metadata, get_credentials, get_locations
 from utils.google_sheets import update_google_sheets_file
@@ -42,7 +43,7 @@ class DataHandler(object):
         self.credentials = get_credentials()
         self.data = None
         self.conn = None
-        self.provider = None
+        self.all_data = {}
 
     def get_forecast(self, location_id):
         print('\n\nGetting data for id {}: {}'.format(location_id, self.locations.loc[location_id, 'PlaceName']))
@@ -84,7 +85,7 @@ class DataHandler(object):
 
     def save_csv_files(self, index_col_name):
         for key in ['observation', 'minutely', 'hourly', 'daily']:
-            data = getattr(self.data, key)
+            data = getattr(self.all_data, key)
             data.index = data[index_col_name].apply(
                 lambda x: dt.datetime.fromtimestamp(int(float(x))).strftime('%H:%M %a %d/%m'))
             data['datetime'] = data[index_col_name].apply(lambda x: dt.datetime.fromtimestamp(int(float(x))))
@@ -92,12 +93,20 @@ class DataHandler(object):
             data.to_csv('DarkSky_{}.csv'.format(key))
 
     def export_data(self, to_csv=True, to_google_sheets=False):
+        self.load_data_from_sqlite()
         if to_csv:
             self.save_csv_files(index_col_name='time')
         if to_google_sheets:
             update_google_sheets_file(file_id=self.credentials['google_sheets_file_id'],
                                       keyfile_path=self.credentials['google_sheets_keyfile_path'],
-                                      forecast=self.data, index_col_name='time')
+                                      all_data=self.all_data, index_col_name='time')
+
+    def load_data_from_sqlite(self):
+        conn = sqlite3.connect('DarkSky.db')
+        for key in ['observation', 'minutely', 'hourly', 'daily']:
+            df = pd.read_sql_query("SELECT * FROM {}".format(key), conn)
+            setattr(self.all_data, key, df)
+        print('\n\nLoaded all data from sqlite.')
 
     def disconnect_from_database(self):
         self.conn.close()
