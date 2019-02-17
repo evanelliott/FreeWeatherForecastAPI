@@ -1,7 +1,6 @@
-from urllib.request import urlopen
 import pandas as pd
 from pandas.io.json import json_normalize
-import json
+import requests
 
 
 class DarkSkyWeatherForecast(object):
@@ -11,8 +10,9 @@ class DarkSkyWeatherForecast(object):
         self.key = api_key
         self.freqs = ['minutely', 'hourly', 'daily']
         try:
-            json_response = json.loads(urlopen('https://api.darksky.net/forecast/{}/{},{}'.format(
-                api_key, latitude, longitude)).read())
+            url = 'https://api.darksky.net/forecast/{}/{},{}?units=si'.format(api_key, latitude, longitude)
+            response = requests.get(url)
+            json_response = response.json()
             self.forecast = json_response
             self.observation = json_normalize(self.forecast['currently'])
             self.observation.index = pd.to_datetime(self.observation['time'], unit='s')
