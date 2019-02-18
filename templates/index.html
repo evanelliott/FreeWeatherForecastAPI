@@ -1,0 +1,32 @@
+{% extends "bootstrap/base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <h1>Select a Location</h1>
+
+    {% block navbar %}
+    {{ nav.mynavbar.render() }}
+    {% endblock %}
+</head>
+<body>
+   {% block content %}
+   <h2>The date and time on the server is: {{ time }}</h2>
+   <hr>
+    {{ div|safe }}
+    <link
+    href="https://cdn.pydata.org/bokeh/release/bokeh-1.0.4.min.css"
+    rel="stylesheet" type="text/css">
+    <link
+    href="https://cdn.pydata.org/bokeh/release/bokeh-widgets-1.0.4.min.css"
+    rel="stylesheet" type="text/css">
+    <link
+    href="https://cdn.pydata.org/bokeh/release/bokeh-tables-1.0.4.min.css"
+    rel="stylesheet" type="text/css">
+    <script src="https://cdn.pydata.org/bokeh/release/bokeh-1.0.4.min.js"></script>
+    <script src="https://cdn.pydata.org/bokeh/release/bokeh-widgets-1.0.4.min.js"></script>
+    <script src="https://cdn.pydata.org/bokeh/release/bokeh-tables-1.0.4.min.js"></script>
+    {{ script|safe }}
+    {% endblock %}
+</body>
+</html>
